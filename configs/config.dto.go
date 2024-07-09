@@ -1,8 +1,9 @@
 package configs
 
 type Config struct {
-	ProjectName     string
-	CompanyName     string
-	ApplicationName string
-	Environment     string
+	ProjectName      string
+	CompanyName      string
+	ApplicationName  string
+	Environment      string
+	MaxTableCapacity int
 }
