@@ -30,4 +30,7 @@ func New(
 func (c *Controller) SetupRoute() {
 	r := c.route.Group("restaurant/v1")
 	r.GET("/self-check", c.restaurantHandler.SelfCheck)
+	r.POST("/initialize", c.restaurantHandler.Initialize)
+	r.POST("/reserve", c.restaurantHandler.ReserveTable)
+	r.POST("/cancel", c.restaurantHandler.CancelReservation)
 }
