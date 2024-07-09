@@ -1,10 +1,14 @@
 package service
 
 import (
+	"context"
 	"one-siam-restaurant/configs"
 )
 
 type RestaurantService interface {
+	SelfCheck(
+		ctx context.Context,
+	) (string, error)
 }
 
 type RestaurantServiceImpl struct {
@@ -20,4 +24,10 @@ func NewRestaurantService(
 		config: config,
 	}
 	return restaurantService
+}
+
+func (s *RestaurantServiceImpl) SelfCheck(
+	ctx context.Context,
+) (string, error) {
+	return "OK", nil
 }
