@@ -42,7 +42,3 @@ docker run -d -p 8080:8080 onesiamrestaurant
 ```
 
 After running these commands, the application should be accessible at http://localhost:8080.
-
-
-License
-This project is licensed under the MIT License.

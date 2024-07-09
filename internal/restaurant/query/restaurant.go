@@ -7,6 +7,7 @@ import (
 	"one-siam-restaurant/internal/restaurant/dto"
 )
 
+//go:generate mockery --name RestaurantQuery --with-expecter
 type RestaurantQuery interface {
 	InitializeRestaurant(
 		ctx context.Context,
