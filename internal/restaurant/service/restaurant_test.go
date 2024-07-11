@@ -13,20 +13,37 @@ import (
 )
 
 func TestRestaurantService_Initialize(t *testing.T) {
+	type args struct {
+		ctx context.Context
+		numTables ini
+	}
 	tests := []struct {
 		name    string
+		args 	args
 		arrange func(t *testing.T, restaurantQuery *query_mocks.RestaurantQuery)
-		act     func(t *testing.T, restaurant RestaurantService) (dto.ResponseDTO, error)
+		// act     func(t *testing.T, restaurant RestaurantService) (dto.ResponseDTO, error)
 		assert  func(t *testing.T, response dto.ResponseDTO, err error)
 	}{
 		{
 			name: "should initial success when call InitializeRestaurant first time",
 			arrange: func(t *testing.T, restaurantQuery *query_mocks.RestaurantQuery) {
+				restaurantQuery.EXPECT().
+					InitializeRestaurant(
+						testutil.ExpectType[context.Context](),
+						10,
+					).
+					Return(true).
+					Times(1)
+
 				restaurantQuery.On("InitializeRestaurant", mock.Anything, 10).Return(true)
 			},
-			act: func(t *testing.T, restaurantService RestaurantService) (dto.ResponseDTO, error) {
-				return restaurantService.Initialize(context.TODO(), 10)
-			},
+			args: args {
+				ctx: context.TODO(),
+				numTables: 10,
+			}
+			// act: func(t *testing.T, restaurantService RestaurantService) (dto.ResponseDTO, error) {
+			// 	return restaurantService.Initialize(context.TODO(), 10)
+			// },
 			assert: func(t *testing.T, response dto.ResponseDTO, err error) {
 				assert.NoError(t, err)
 				assert.Equal(t, "Success", response.Status)
@@ -54,7 +71,8 @@ func TestRestaurantService_Initialize(t *testing.T) {
 			}
 			restaurantService := NewRestaurantService(mockConfigs, restaurantQuery)
 			tt.arrange(t, restaurantQuery)
-			response, err := tt.act(t, restaurantService)
+			// response, err := tt.act(t, restaurantService)
+			response, err := restaurantService.Initialize(tt.args.ctx, tt.args.numTables)
 			tt.assert(t, response, err)
 		})
 	}
