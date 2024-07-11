@@ -58,15 +58,25 @@ func (h *RestaurantHandlerImpl) SelfCheck(
 	ctx.JSON(http.StatusOK, result)
 }
 
+type (
+	InitializeRequest struct {
+		NumberOfTables uint64 `json:"number_of_tables" query:"number_of_tables"`
+	}
+
+	InitializeResponse struct {
+		
+	}
+)
+
 func (h *RestaurantHandlerImpl) Initialize(
 	ctx *gin.Context,
 ) {
-	var params map[string]interface{}
+	var params InitializeRequest
 	if err := ctx.BindJSON(&params); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	numTablesFloat, ok := params["number_of_tables"].(float64)
+	numTablesFloat, ok := params["number_of_tables"].(float64) // Can panic
 	numTables := int(numTablesFloat)
 	if !ok {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid or missing number_of_tables"})
